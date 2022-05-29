@@ -1,23 +1,28 @@
 export interface Category {
-    readonly name: string;
-    readonly multiplier: number;
-    readonly hasRecorded: boolean;
-    readonly hasOwned: boolean;
-    recorded: number;
-    owned: number;
-    points: number;
+  readonly name: string;
+  readonly multiplier: number;
+  readonly hasRecorded: boolean;
+  readonly hasOwned: boolean;
+  recorded: number;
+  owned: number;
+  points: number;
 }
 
-function createCategory(name: string, multiplier: number, hasRecorded?: boolean, hasOwned?: boolean): Category {
-    return {
-        name,
-        multiplier,
-        hasRecorded: (hasRecorded ?? true),
-        hasOwned: (hasOwned ?? false),
-        recorded: 0,
-        owned: 0,
-        points: 0
-    }
+function createCategory(
+  name: string,
+  multiplier: number,
+  hasRecorded?: boolean,
+  hasOwned?: boolean,
+): Category {
+  return {
+    name,
+    multiplier,
+    hasRecorded: (hasRecorded ?? true),
+    hasOwned: (hasOwned ?? false),
+    recorded: 0,
+    owned: 0,
+    points: 0,
+  };
 }
 function calcNeeded(points: number, cat: Category) {
   return points * cat.multiplier;
@@ -37,10 +42,10 @@ function calcFinalScore(points: number, cat: Category) {
 }
 
 export {
-    createCategory,
-    calcNeeded,
-    calcScore,
-    calcBasicScore,
-    calcBonusScore,
-    calcFinalScore
-}
+  createCategory,
+  calcNeeded,
+  calcScore,
+  calcBasicScore,
+  calcBonusScore,
+  calcFinalScore,
+};
