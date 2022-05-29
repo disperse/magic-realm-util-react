@@ -1,4 +1,4 @@
-import {Category} from "../../types/Category";
+import type { Category } from '../../types/Category';
 
 export interface Column {
     field?: keyof Category
@@ -6,7 +6,7 @@ export interface Column {
     width: number
     editable?: boolean
     valueGetter: (cat: Category) => string | number
-    totalGetter?: (cat: Array<Category>) => string | number
+    totalGetter?: (cats: Array<Category>) => string | number
 }
 
 export interface Patch {

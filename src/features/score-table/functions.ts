@@ -1,4 +1,4 @@
-import { Patch } from './scoreTableTypes';
+import { Patch } from './types';
 import { Category } from '../../types/Category';
 
 function getRandomPatches(categories: Array<Category>): Array<Patch> {

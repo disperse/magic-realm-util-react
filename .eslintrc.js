@@ -6,6 +6,8 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'airbnb',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -26,5 +28,6 @@ module.exports = {
     'react/react-in-jsx-scope': [0],
     'no-param-reassign': [1, { props: false }],
     'implicit-arrow-linebreak': [0],
+    'no-plusplus': [0],
   },
 };

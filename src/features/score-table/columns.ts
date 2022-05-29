@@ -7,7 +7,7 @@ import {
   Category,
 } from '../../types/Category';
 
-import { Column } from './scoreTableTypes';
+import { Column } from './types';
 
 const columns: Array<Column> = [
   {

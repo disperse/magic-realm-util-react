@@ -10,10 +10,11 @@ import Paper from '@mui/material/Paper';
 import { ChangeEventHandler } from 'react';
 import { Category } from '../../types/Category';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { patchCategories, setField } from './scoreTableSlice';
-import { Patch, Column } from './scoreTableTypes';
-import columns from './columnDefinitions';
-import { getRandomPatches } from './scoreTableFunctions';
+import { patchCategories, setField } from './slice';
+import { Patch, Column } from './types';
+import columns from './columns';
+import { getRandomPatches } from './functions';
+import { RootState } from '../../store/store';
 
 interface ScoreTableCellProps {
   column: Column
@@ -45,7 +46,7 @@ function ScoreTableCell(props: ScoreTableCellProps) {
 }
 
 export default function ScoreTable() {
-  const categories: Array<Category> = useAppSelector((state) => state.store.categories);
+  const categories: Array<Category> = useAppSelector((state: RootState) => state.store.categories);
   const dispatch = useAppDispatch();
 
   /* Actions */

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Category, createCategory } from '../../types/Category';
-import { Patch, SetField } from './scoreTableTypes';
+import { Patch, SetField } from './types';
 
 interface ScoreTableState {
     categories: Array<Category>,
