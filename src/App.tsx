@@ -9,8 +9,8 @@ import Rules from "./routes/Rules";
 function App() {
   const isActive = (obj: { isActive: boolean }) => (obj.isActive) ? 'active' : 'inactive';
   return (
-    <Container maxWidth="sm">
-      <Container sx={{ my: 4 }}>
+    <Container>
+      <Container>
         <header>
             <div>
                 <h1>
