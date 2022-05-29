@@ -1,25 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { RootState } from '../../store/store';
-import { Category } from "../../types/Category";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Category, createCategory } from "../../types/Category";
 import combinations from "../../functions/combinations";
+import { Patch } from "./ScoreTable";
 
 interface ScoreTableState {
     categories: Array<Category>,
     pointsArray: Array<Array<number>>,
-    generator: Generator,
     tortureTest: boolean
 }
 
+const generator = combinations([0, 1, 2, 3, 4, 5], 5);
+
 const initialState: ScoreTableState = {
     categories: [
-        new Category("Great Treasures", 1, true, false),
-        new Category("Spells", 2),
-        new Category("Fame", 10, true),
-        new Category("Notoriety", 20, true),
-        new Category("Gold", 30, true),
+        createCategory("Great Treasures", 1, false, true),
+        createCategory("Spells", 2),
+        createCategory("Fame", 10, true, true),
+        createCategory("Notoriety", 20, true, true),
+        createCategory("Gold", 30, true, true),
     ],
     pointsArray: [[0, 0, 0, 0, 0]],
-    generator: combinations([0, 1, 2, 3, 4, 5], 5),
     tortureTest: false,
 }
 
@@ -33,9 +33,21 @@ const scoreTableSlice = createSlice({
         addPoints: (state, action) => {
             state.pointsArray.push(action.payload);
         },
+        patchCategories: (state, action: PayloadAction<Array<Patch>>) => {
+            action.payload.forEach((patch, index) => {
+                let cat = state.categories[index];
+                state.categories[index].points = patch.points;
+                if (cat.hasRecorded) {
+                    state.categories[index].recorded = Math.floor(patch.recorded * cat.multiplier);
+                }
+                if (cat.hasOwned) {
+                    state.categories[index].owned = Math.floor(patch.owned * cat.multiplier);
+                }
+            });
+        }
     }
 });
 
-export const { addPoints } = scoreTableSlice.actions;
+export const { patchCategories } = scoreTableSlice.actions;
 
 export default scoreTableSlice.reducer;

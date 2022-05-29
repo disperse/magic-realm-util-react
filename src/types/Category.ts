@@ -1,4 +1,4 @@
-export class Category {
+export interface Category {
     readonly name: string;
     readonly multiplier: number;
     readonly hasRecorded: boolean;
@@ -6,23 +6,19 @@ export class Category {
     recorded: number;
     owned: number;
     points: number;
-  
-    constructor(
-        name: string,
-        multiplier: number,
-        hasOwned?: boolean,
-        hasRecorded?: boolean
-    ) {
-        this.name = name;
-        this.multiplier = multiplier;
-        this.hasRecorded = hasRecorded ?? true;
-        this.hasOwned = hasOwned ?? false;
-        this.recorded = 0;
-        this.owned = 0;
-        this.points = 0;
-    }
 }
 
+function createCategory(name: string, multiplier: number, hasRecorded?: boolean, hasOwned?: boolean): Category {
+    return {
+        name,
+        multiplier,
+        hasRecorded: (hasRecorded ?? true),
+        hasOwned: (hasOwned ?? false),
+        recorded: 0,
+        owned: 0,
+        points: 0
+    }
+}
 function calcNeeded(points: number, cat: Category) {
   return points * cat.multiplier;
 }
@@ -41,6 +37,7 @@ function calcFinalScore(points: number, cat: Category) {
 }
 
 export {
+    createCategory,
     calcNeeded,
     calcScore,
     calcBasicScore,
