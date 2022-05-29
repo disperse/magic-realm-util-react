@@ -5,7 +5,7 @@ const theme = createTheme({
     mode: 'dark',
   },
   typography: {
-    fontSize: 22,
+    fontSize: 18,
   },
 });
 
