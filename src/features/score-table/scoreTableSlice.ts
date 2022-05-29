@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Category, createCategory } from "../../types/Category";
 import combinations from "../../functions/combinations";
-import { Patch } from "./ScoreTable";
+import { Patch, SetField } from "./ScoreTable";
 
 interface ScoreTableState {
     categories: Array<Category>,
@@ -27,11 +27,25 @@ const scoreTableSlice = createSlice({
     name: 'scoreTable',
     initialState,
     reducers: {
-        setPoints: (state, action) => {
+        setPoints: (state, action: PayloadAction<Array<number>>) => {
             state.pointsArray[0] = action.payload;
         },
         addPoints: (state, action) => {
             state.pointsArray.push(action.payload);
+        },
+        setField: (state, action: PayloadAction<SetField>) => {
+            const cat = state.categories[action.payload.categoryIndex];
+            switch (action.payload.field) {
+                case "points":
+                    cat.points = action.payload.value;
+                    break;
+                case "recorded":
+                    cat.recorded = action.payload.value;
+                    break;
+                case "owned":
+                    cat.owned = action.payload.value;
+                    break;
+            }
         },
         patchCategories: (state, action: PayloadAction<Array<Patch>>) => {
             action.payload.forEach((patch, index) => {
@@ -48,6 +62,6 @@ const scoreTableSlice = createSlice({
     }
 });
 
-export const { patchCategories } = scoreTableSlice.actions;
+export const { patchCategories, setField } = scoreTableSlice.actions;
 
 export default scoreTableSlice.reducer;

@@ -15,9 +15,10 @@ import {
     calcFinalScore, Category
 } from "../../types/Category";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { patchCategories } from "./scoreTableSlice";
+import { patchCategories, setField } from "./scoreTableSlice";
 
 interface Column {
+    field?: keyof Category
     headerName: string
     width: number
     editable?: boolean
@@ -31,6 +32,12 @@ export interface Patch {
     owned: number
 }
 
+export interface SetField {
+    categoryIndex: number
+    field: keyof Category
+    value: number
+}
+
 const columns: Array<Column> = [
     {
         headerName: "Category",
@@ -39,6 +46,7 @@ const columns: Array<Column> = [
         totalGetter: () => `Total`
     },
     {
+        field: "points",
         headerName: "Points",
         width: 80,
         editable: true,
@@ -59,12 +67,14 @@ const columns: Array<Column> = [
             calcNeeded(cat.points, cat),
     },
     {
+        field: "recorded",
         headerName: "Recorded",
         width: 120,
         editable: true,
         valueGetter: (cat: Category) => cat.recorded,
     },
     {
+        field: "owned",
         headerName: "Owned",
         width: 80,
         editable: true,
@@ -111,6 +121,16 @@ const columns: Array<Column> = [
 export function ScoreTable() {
     const categories: Array<Category> = useAppSelector(state => state.store.categories);
     const dispatch = useAppDispatch();
+    const changeValue = (categoryIndex: number) => { 
+        return (event: React.FormEvent<HTMLInputElement>) => {
+            console.log(event);
+            dispatch(setField({
+                categoryIndex,
+                value: Number.parseInt(event.currentTarget.value),
+                field: event.currentTarget.name
+            }))
+        }
+    }
     const randomize = () => {
         const patches: Array<Patch> = [];
         let remaining = 5;
@@ -130,13 +150,20 @@ export function ScoreTable() {
         dispatch(patchCategories(patches));
     }
     
-    const getTableCell = (column: Column, cat: Category) => {
+    const getTableCell = (column: Column, cat: Category, index: number) => {
         const value = column.valueGetter(cat);
         return (
-            <TableCell>
+            <TableCell key={`${column.headerName}-${cat.name}`}>
                 {
                     (column.editable) ?
-                        <input type="number" min="-999" max="999" value={value} /> :
+                        <input
+                            name={column.field}
+                            type="number"
+                            min="-999"
+                            max="999"
+                            value={value}
+                            onChange={changeValue(index)}
+                        /> :
                         <span>{value}</span>
                 }
             </TableCell>
@@ -157,24 +184,24 @@ export function ScoreTable() {
                         </TableRow>
                         <TableRow>
                             {columns.map((column) => (
-                                <TableCell>{column.headerName}</TableCell>
+                                <TableCell key={column.headerName}>{column.headerName}</TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {categories.map((cat) => (
+                        {categories.map((cat, index) => (
                             <TableRow
                               key={cat.name}
                             >
                                 {columns.map((column) => (
-                                    getTableCell(column, cat)
+                                    getTableCell(column, cat, index)
                                 ))}
                             </TableRow>
                             
                         ))}
                         <TableRow>
                             {columns.map((column) => (
-                                <TableCell component="th">
+                                <TableCell component="th" key={`total-${column.headerName}`}>
                                     {(column.totalGetter) ?
                                         column.totalGetter(categories) : ''}
                                 </TableCell>
