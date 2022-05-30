@@ -1,6 +1,11 @@
 import './App.css';
 import { Container } from '@mui/material';
-import { NavLink as Link, Route, Routes } from 'react-router-dom';
+import {
+  Navigate,
+  NavLink as Link,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import reactLogo from './assets/react-icon.svg';
 import Home from './routes/Home';
 import Scoring from './routes/Scoring';
@@ -26,8 +31,9 @@ function App() {
         </div>
       </nav>
       <main>
-        <div>
+        <div style={{ display: 'flex', height: '100%' }}>
           <Routes>
+            <Route index element={<Navigate replace to="/home" />} />
             <Route path="home" element={<Home />} />
             <Route path="scoring" element={<Scoring />} />
             <Route path="rules" element={<Rules />} />
