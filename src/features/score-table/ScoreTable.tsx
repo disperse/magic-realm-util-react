@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, useEffect } from 'react';
 import { Category } from '../../types/Category';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { patchCategories, setField } from './slice';
@@ -45,9 +45,13 @@ function ScoreTableCell(props: ScoreTableCellProps) {
   );
 }
 
+const getRandomTime = () => Math.round(Math.random() * 150) + 50;
+
 export default function ScoreTable() {
   const categories: Array<Category> = useAppSelector((state: RootState) => state.store.categories);
   const dispatch = useAppDispatch();
+
+  const [tortureTest, setTortureTest] = React.useState<boolean>(false);
 
   /* Actions */
   const changeValue = (categoryIndex: number) => (event: React.FormEvent<HTMLInputElement>) => {
@@ -63,6 +67,21 @@ export default function ScoreTable() {
     dispatch(patchCategories(patches));
   };
 
+  useEffect(() => {
+    if (tortureTest) {
+      setTimeout(randomize, getRandomTime());
+    }
+  });
+
+  const toggleTortureTest = () => {
+    if (tortureTest) {
+      setTortureTest(false);
+    } else {
+      setTortureTest(true);
+      setTimeout(randomize, getRandomTime());
+    }
+  };
+
   return (
     <div style={{ width: '100%' }}>
       <TableContainer component={Paper}>
@@ -75,6 +94,13 @@ export default function ScoreTable() {
                   onClick={randomize}
                 >
                   Random
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={toggleTortureTest}
+                  style={{ marginLeft: '1em' }}
+                >
+                  Toggle torture test
                 </Button>
               </TableCell>
             </TableRow>
