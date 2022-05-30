@@ -64,7 +64,7 @@ export default function ScoreTable() {
   };
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ width: '100%' }}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

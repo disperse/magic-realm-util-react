@@ -8,8 +8,6 @@ interface ScoreTableState {
     tortureTest: boolean
 }
 
-// const generator = combinations([0, 1, 2, 3, 4, 5], 5);
-
 const initialState: ScoreTableState = {
   categories: [
     createCategory('Great Treasures', 1, false, true),
@@ -18,7 +16,7 @@ const initialState: ScoreTableState = {
     createCategory('Notoriety', 20, true, true),
     createCategory('Gold', 30, true, true),
   ],
-  pointsArray: [[0, 0, 0, 0, 0]],
+  pointsArray: [],
   tortureTest: false,
 };
 
@@ -26,9 +24,6 @@ const scoreTableSlice = createSlice({
   name: 'scoreTable',
   initialState,
   reducers: {
-    setPoints: (state, action: PayloadAction<Array<number>>) => {
-      state.pointsArray[0] = action.payload;
-    },
     addPoints: (state, action) => {
       state.pointsArray.push(action.payload);
     },
@@ -63,6 +58,6 @@ const scoreTableSlice = createSlice({
   },
 });
 
-export const { patchCategories, setField } = scoreTableSlice.actions;
+export const { addPoints, patchCategories, setField } = scoreTableSlice.actions;
 
 export default scoreTableSlice.reducer;
